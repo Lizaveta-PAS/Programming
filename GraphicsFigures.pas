@@ -2,6 +2,11 @@ Uses math;
 
 Type TFunction=Function(a:Word;t:double;Var y:Word);
 
+Procedure InitGraph(gd, gm:integer; PathToDriver:string);
+ begin
+ InitGraph(gd, gm, PathToDriver);
+ if GraphResult <> grok then halt;
+ end;
 
 {$F+}
 
@@ -26,16 +31,14 @@ end;
 
 Procedure PlotGraph(TopX,TopY,BottomX,BottomY:integer;FX,FY:TFunction;TBegin,TEnd,dT:double;dx,dy:double;a,b:Word);
  type TMas= array of double;
- Const eps=1E-6;
  var Width, Height:integer;
  X,Y:TMas;
 	 i, N:longword;
 	 r1,r2:double;
 	 MaxX, MinX, MaxY, MinY:double;
 	 MashX, MashY, Mash:double;
-     XG,YG,xf,yf:TMas;
+   XG,YG,xf,yf:TMas;
  begin
- TEnd:=TEnd*eps;
  Width:=BottomX-TopX-2*dx;
  Height:=BottomY-TopY-2*dy;
  N:=Round((TEnd-TBegin)/dT)+1;
@@ -69,9 +72,28 @@ Procedure PlotGraph(TopX,TopY,BottomX,BottomY:integer;FX,FY:TFunction;TBegin,TEn
    PutPixel(XG,YG);
    t:=t+dT;
    end;
-  end;
 
 end;
+
+Const eps=1E-6;
+Var x1,y1,x2,y2:integer;
+    gd,gm:smallint;
+    Mash:double;
+    TBegin,TEnd:double;
+
+begin
+ InitGraph(10,262,'');
+ x1:=0;y1:=0;x2:=GetMaxX div 2;y2:=GetMaxY div 2;
+ SetViewPort(x1,y1,x2,y2,ClipOn);
+ x2:=x2-x1;y2=y2-y1;x1:=0,y1:=0;
+ TBegin:=0;TEnd:=2*pi*eps;
+ PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,10,10,5,11);
+
+ 
+end.    
+
+
+
 
 
 
