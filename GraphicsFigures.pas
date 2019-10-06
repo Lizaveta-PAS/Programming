@@ -83,13 +83,32 @@ Var x1,y1,x2,y2:integer;
 
 begin
  InitGraph(10,262,'');
+
  x1:=0;y1:=0;x2:=GetMaxX div 2;y2:=GetMaxY div 2;
  SetViewPort(x1,y1,x2,y2,ClipOn);
  x2:=x2-x1;y2=y2-y1;x1:=0,y1:=0;
  TBegin:=0;TEnd:=2*pi*eps;
  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,10,10,5,11);
 
+  x1:=0;y1:=getmaxy div 2; x2:=getmaxx div 2;y2:=getmaxy;
+  setviewport(x1,y1,x2,y2,ClipOn);
+  x2:=x2-x1;y2:=y2-y1;x1:=0;y1:=0;;
+  TBegin:=0;TEnd:=2*Pi;
+  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,10,10,3,4);
+
+  x1:=getmaxx div 2;y1:=0; x2:=getmaxx;y2:=getmaxy div 2;
+  setviewport(x1,y1,x2,y2,ClipOn);
+  x2:=x2-x1;y2:=y2-y1;x1:=0;y1:=0;;
+  TBegin:=0;TEnd:=2*Pi;
+  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,10,10,9,4);
  
+  x1:=getmaxx div 2;y1:=getmaxy div 2; x2:=getmaxx;y2:=getmaxy;
+  setviewport(x1,y1,x2,y2,ClipOn);
+  x2:=x2-x1;y2:=y2-y1;x1:=0;y1:=0;;
+  TBegin:=0;TEnd:=50*Pi;
+  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,10,10,4,3);
+
+readln;
 end.    
 
 
