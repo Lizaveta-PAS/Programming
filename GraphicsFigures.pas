@@ -1,6 +1,7 @@
-Uses math;
+Program GraphFig;
+Uses math,crt, dos, ptcGraph, sysutils;
 
-Type TFunction=Function(a:Word;t:double;Var y:Word);
+Type TFunction=Function(a,b:Word;t:double):double;
 
 Procedure InitGraph(gd, gm:integer; PathToDriver:string);
  begin
@@ -17,7 +18,7 @@ end;
 
 Function PointsY(a,b:word,t:double):double;
 begin
-PointsY:=a*sqr(cos(t))+b*cos(t);
+PointsY:=a*cos(t)*sin(t)+b*sin(t);
 end;
 
 {$F-}
@@ -33,11 +34,11 @@ Procedure PlotGraph(TopX,TopY,BottomX,BottomY:integer;FX,FY:TFunction;TBegin,TEn
  type TMas= array of double;
  var Width, Height:integer;
  X,Y:TMas;
-	 i, N:longword;
-	 r1,r2:double;
-	 MaxX, MinX, MaxY, MinY:double;
-	 MashX, MashY, Mash:double;
-   XG,YG,xf,yf:TMas;
+	 T:double;
+   r1,r2,xf,yf:double;
+   MaxX, MinX, MaxY, MinY:double;
+   MashX, MashY, Mash:double;
+   XG,YG:integer;
  begin
  Width:=BottomX-TopX-2*dx;
  Height:=BottomY-TopY-2*dy;
@@ -67,8 +68,9 @@ Procedure PlotGraph(TopX,TopY,BottomX,BottomY:integer;FX,FY:TFunction;TBegin,TEn
    xf:=PointsX(a,b,t);
    yf:=PointsY(a,b,t);
 
-   XG:=round(xf*Mash)+BottomX+ (TopX-BottomX) div 2;
-   YG:=round(yf*Mash)+BottomY+ (TopY-BottomY) div 2;
+   XG:=round(r1*Mash)+BottomX+ (TopX-BottomX) div 2;
+   YG:=round(r2*Mash)+BottomY+ (TopY-BottomY) div 2;
+   PutPixel(XG,YG,White);
    PutPixel(XG,YG);
    t:=t+dT;
    end;
@@ -76,7 +78,7 @@ Procedure PlotGraph(TopX,TopY,BottomX,BottomY:integer;FX,FY:TFunction;TBegin,TEn
 end;
 
 Const eps=1E-6;
-Var x1,y1,x2,y2:integer;
+Var x1,y1,x2,,ColorAxis:integer;
     gd,gm:smallint;
     Mash:double;
     TBegin,TEnd:double;
@@ -90,7 +92,7 @@ begin
   PlotAxis(x1,y1,x2,y2,4,4,ColorAxis)
   x2:=x2-x1;y2=y2-y1;x1:=0,y1:=0;
   TBegin:=0;TEnd:=2*pi*eps;
-  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,8,8,5,11);
+  PlotGraph(x1,y1,x2,y2,@PointsX,@PointsY,TBegin,TEnd,0.001,8,8,5,11);
 
   x1:=0;y1:=getmaxy div 2; x2:=getmaxx div 2;y2:=getmaxy;
   setviewport(x1,y1,x2,y2,ClipOn);
@@ -98,7 +100,7 @@ begin
   x2:=x2-x1;y2:=y2-y1;x1:=0;y1:=0;
   PlotAxis(x1,y1,x2,y2,8,8,ColorAxis);
   TBegin:=0;TEnd:=2*Pi;
-  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,8,8,3,4);
+  PlotGraph(x1,y1,x2,y2,@PointsX,@PointsY,TBegin,TEnd,0.001,8,8,3,4);
 
   x1:=getmaxx div 2;y1:=0; x2:=getmaxx;y2:=getmaxy div 2;
   setviewport(x1,y1,x2,y2,ClipOn);
@@ -106,7 +108,7 @@ begin
   PlotAxis(x1,y1,x2,y2,8,8,ColorAxis);
   x2:=x2-x1;y2:=y2-y1;x1:=0;y1:=0;;
   TBegin:=0;TEnd:=2*Pi;
-  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,8,8,9,4);
+  PlotGraph(x1,y1,x2,y2,@PointsX,@PointsY,TBegin,TEnd,0.001,8,8,9,4);
  
   x1:=getmaxx div 2;y1:=getmaxy div 2; x2:=getmaxx;y2:=getmaxy;
   setviewport(x1,y1,x2,y2,ClipOn);
@@ -114,8 +116,7 @@ begin
   PlotAxis(x1,y1,x2,y2,8,8,ColorAxis);
   x2:=x2-x1;y2:=y2-y1;x1:=0;y1:=0;;
   TBegin:=0;TEnd:=50*Pi;
-  PlotGraph(x1,y1,x2,y2,@FX,@FY,TBegin,TEnd,0.001,8,8,4,3);
-
+  PlotGraph(x1,y1,x2,y2,@PointsX,@PointsY,TBegin,TEnd,0.001,8,8,4,3);
 readln;
 end.    
 
